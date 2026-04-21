@@ -1,105 +1,197 @@
-# IT Help Desk Ticket Management System (Azure Edition)
+# IT Help Desk Ticket Management System — Azure Edition
 
-This project is an upgraded version of my previous Help Desk Ticket Management System, where I extended the application from a local PostgreSQL database to a cloud-based solution using Microsoft Azure SQL Database.
+This project is an upgraded version of my original Help Desk Ticket Management System, where I migrated the backend from a local PostgreSQL database to a cloud-based solution using Microsoft Azure SQL Database.
 
-The goal of this update was to gain hands-on experience with cloud databases, backend integration, and real-world system workflows.
+The goal of this upgrade was to move beyond a local setup and build a system that reflects how real-world backend applications interact with cloud infrastructure.
 
 ---
 
 ## Project Overview
 
-This is a Java-based command-line application that simulates an IT Help Desk system. It allows users to create, manage, assign, and update tickets while maintaining a structured database of users, categories, and ticket history.
+This is a Java-based command-line application that simulates an internal IT Help Desk system.
 
-In this version, the system is fully integrated with Azure SQL Database, making it a cloud-connected backend application.
+It allows users to:
+
+* create and manage tickets
+* assign tickets to technicians
+* update ticket status
+* track ticket history
+* query structured data using SQL joins
+
+In this version, all data is stored in Azure SQL Database, and the Java application connects to it using JDBC.
 
 ---
 
 ## Key Features
 
-* Create and manage help desk tickets
-* Assign tickets to technicians
-* Update ticket status (open, in_progress, closed)
-* Track ticket update history
-* View detailed ticket information
-* Validate users and categories before operations
-* Perform complex SQL queries with joins
+* Full CRUD operations on tickets
+* Technician assignment workflow
+* Ticket status management (open, in_progress, closed)
+* Ticket update history tracking
+* Input validation for users and categories
+* SQL queries using joins across multiple tables
 
 ---
 
-## Technologies Used
+## System Architecture
 
-* Java (JDBC, OOP, DAO pattern)
-* Microsoft Azure SQL Database
-* SQL Server
-* SQL (joins, constraints, relational design)
-* BlueJ (development environment)
+Java Application (DAO Pattern)
+⬇
+JDBC Connection
+⬇
+Azure SQL Database
+
+This design separates business logic from database operations, making the system modular and scalable.
+
+---
+
+## Entity Relationship Diagram
+
+![ER Diagram](screenshots/00-erd-diagram.png)
+
+This diagram represents the relational structure of the system.
+
+Key relationships:
+
+* One user can create multiple tickets
+* A technician (user) can be assigned multiple tickets
+* Each ticket belongs to one category
+* Each ticket can have multiple updates (history tracking)
 
 ---
 
 ## Database Design
 
-The system uses a relational database with the following core tables:
+The system uses a relational schema with the following tables:
 
-* Users (employees, technicians, admins)
-* Categories (issue types)
-* Tickets (main ticket records)
-* Ticket Updates (history/logs for each ticket)
+* users → employees, technicians, admins
+* categories → issue types
+* tickets → main ticket records
+* ticket_updates → history/logs for each ticket
 
 The schema includes:
 
 * Primary and foreign keys
-* Data validation using CHECK constraints
-* Proper relationships between entities
+* Check constraints for validation
+* Relationships between entities
 
 ---
 
-## Azure Integration
+## Azure Setup and Configuration
 
-This project was extended from a local setup to Azure SQL Database.
+### Azure SQL Database Creation
 
-Key steps included:
-
-* Creating an Azure SQL Database instance
-* Configuring firewall rules to allow client access
-* Migrating schema and seed data to Azure
-* Connecting the Java application using JDBC
-* Validating CRUD operations against the cloud database
+![Azure SQL Creation](screenshots/01-azure-sql-review-create.png)
 
 ---
 
-## Screenshots
+### Database Overview
 
-### Azure Setup
-
-![Database Created](screenshots/01-azure-sql-review-create.png)
-![Database Overview](screenshots/02-azure-sql-overview.png)
-![Firewall Configuration](screenshots/03-firewall-client-ip.png)
+![Azure Overview](screenshots/02-azure-sql-overview.png)
 
 ---
 
-### Database & Data
+### Firewall Configuration (Client Access)
 
-![Schema Created](screenshots/05-schema-created.png)
-![Seed Data Inserted](screenshots/06-seed-data-inserted.png)
-![Join Query Results](screenshots/08-ticket-join-results.png)
+![Firewall](screenshots/03-firewall-client-ip.png)
 
 ---
 
-### Java Application (Connected to Azure)
+### Database Connection via SSMS
 
-![Connection Success](screenshots/11-java-connected-to-azure.png)
-![View Users](screenshots/12-view-users-azure.png)
-![View Tickets](screenshots/14-view-all-tickets-azure.png)
-![Ticket Details](screenshots/15-view-ticket-details-azure.png)
-![Ticket Update](screenshots/16-ticket-update-added-azure.png)
+![SSMS Connection](screenshots/04-database-connected.png)
 
 ---
 
-### Azure Monitoring
+## Database Setup and Data
 
-![Azure Metrics](screenshots/18-azure-database-metrics.png)
+### Schema Creation
 
-This demonstrates real-time activity generated by the application interacting with the cloud database.
+![Schema](screenshots/05-schema-created.png)
+
+---
+
+### Seed Data Insertion
+
+![Seed Data](screenshots/06-seed-data-inserted.png)
+
+---
+
+### Data Validation (Record Counts)
+
+![Counts](screenshots/07-record-counts.png)
+
+---
+
+### Ticket Query (Joins Across Tables)
+
+![Join Query](screenshots/08-ticket-join-results.png)
+
+---
+
+### Ticket Update History
+
+![Updates](screenshots/09-ticket-updates-results.png)
+
+---
+
+## Java Integration (JDBC and Azure)
+
+### SQL Server JDBC Driver Setup
+
+![JDBC Driver](screenshots/10-sqlserver-jdbc-driver-added.png)
+
+---
+
+### Successful Connection to Azure SQL
+
+![Connection](screenshots/11-java-connected-to-azure.png)
+
+---
+
+## Application Functionality
+
+### View Users
+
+![Users](screenshots/12-view-users-azure.png)
+
+---
+
+### View Categories
+
+![Categories](screenshots/13-view-categories-azure.png)
+
+---
+
+### View All Tickets
+
+![Tickets](screenshots/14-view-all-tickets-azure.png)
+
+---
+
+### View Ticket Details and History
+
+![Details](screenshots/15-view-ticket-details-azure.png)
+
+---
+
+### Add Ticket Update
+
+![Update](screenshots/16-ticket-update-added-azure.png)
+
+---
+
+### Update Ticket Status
+
+![Status](screenshots/17-ticket-status-updated-azure.png)
+
+---
+
+## Azure Monitoring (Live Activity)
+
+![Metrics](screenshots/18-azure-database-metrics.png)
+
+This shows real-time CPU and I/O activity in Azure SQL Database, generated by the Java application performing operations such as ticket creation, updates, and queries.
 
 ---
 
@@ -107,41 +199,42 @@ This demonstrates real-time activity generated by the application interacting wi
 
 1. Clone the repository
 2. Open the project in BlueJ or any Java IDE
-3. Add Microsoft SQL Server JDBC Driver to your project libraries
-4. Update database credentials in `DatabaseConnection.java`
+3. Add the Microsoft SQL Server JDBC driver to the project libraries
+4. Update credentials in `DatabaseConnection.java`
 5. Run `Main.java`
 
 ---
 
-## Notes
+## Important Notes
 
-* The JDBC driver must be added manually to run the project
+* The JDBC driver must be added manually
 * Replace placeholder credentials before running
-* Screenshots demonstrate full functionality using Azure SQL
+* Do not commit real database credentials
 
 ---
 
-## What I Learned
+## What This Project Demonstrates
 
-* How to design and manage relational databases
-* How to integrate Java applications with cloud databases
-* Working with Azure SQL Database and firewall configurations
-* Debugging connectivity and driver issues
-* Structuring backend systems using DAO pattern
+* Java backend development using DAO pattern
+* Relational database design and SQL querying
+* Cloud database integration using Azure SQL
+* JDBC connectivity and troubleshooting
+* Real-world IT support workflows
 
 ---
 
 ## Future Improvements
 
 * Add GUI (JavaFX or web interface)
-* Implement authentication system
-* Add REST API layer
-* Deploy as a full cloud-based application
+* Implement authentication and user roles
+* Expose REST API endpoints
+* Deploy as a full cloud-hosted application
 
 ---
 
 ## Conclusion
 
-This project demonstrates practical backend development, database design, and cloud integration. It reflects my approach of learning by building real systems and understanding how components work together in a real-world environment.
+This project reflects my approach to learning by building real systems.
+By extending a local application into a cloud-based solution, I gained practical experience in backend development, database design, and Azure cloud integration.
 
 ---
