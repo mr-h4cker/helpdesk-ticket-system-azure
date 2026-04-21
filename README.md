@@ -71,9 +71,9 @@ Key steps included:
 
 ### Azure Setup
 
-![Database Created](screenshots/01-create-database-review.png)
-![Database Overview](screenshots/02-database-overview.png)
-![Firewall Configuration](screenshots/03-firewall-ip.png)
+![Database Created](screenshots/01-azure-sql-review-create.png)
+![Database Overview](screenshots/02-azure-sql-overview.png)
+![Firewall Configuration](screenshots/03-firewall-client-ip.png)
 
 ---
 
