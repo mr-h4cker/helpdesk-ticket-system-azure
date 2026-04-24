@@ -23,7 +23,9 @@ public class Main
             return;
         }
 
-        while (true) 
+        boolean running = true;
+
+        while (running) 
         {
             System.out.println("\n===== IT HELP DESK TICKET MANAGEMENT SYSTEM =====");
             System.out.println("1. View all users");
@@ -120,7 +122,7 @@ public class Main
                         if (!assignedInput.isEmpty()) 
                         {
                             assignedTo = Integer.valueOf(assignedInput);
-                            if (!userDAO.userExists(assignedTo.intValue())) 
+                            if (!userDAO.userExists(assignedTo)) 
                             {
                                 System.out.println("Assigned user ID does not exist.");
                                 break;
@@ -262,12 +264,14 @@ public class Main
 
                 case "0":
                     System.out.println("Exiting system.");
-                    scanner.close();
-                    return;
+                    running = false;
+                    break;
 
                 default:
                     System.out.println("Invalid option. Try again.");
             }
         }
+
+        scanner.close();
     }
 }
