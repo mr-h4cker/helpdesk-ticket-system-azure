@@ -23,6 +23,7 @@ public class ApiServer {
 
     static class HealthHandler implements HttpHandler {
         public void handle(HttpExchange exchange) throws IOException {
+            exchange.getResponseHeaders().add("Content-Type", "text/plain");
             send(exchange, "Help Desk API is running!");
         }
     }
@@ -42,28 +43,40 @@ public class ApiServer {
                 boolean firstRow = true;
 
                 while (rs.next()) {
-                    if (!firstRow) json.append(",");
+                    if (!firstRow) {
+                        json.append(",");
+                    }
                     firstRow = false;
 
                     json.append("{");
 
                     for (int i = 1; i <= columns; i++) {
-                        if (i > 1) json.append(",");
+                        if (i > 1) {
+                            json.append(",");
+                        }
 
                         String column = meta.getColumnName(i);
                         String value = rs.getString(i);
 
-                        json.append("\"").append(column).append("\":");
-                        json.append("\"").append(value == null ? "" : value.replace("\"", "\\\"")).append("\"");
+                        json.append("\"")
+                            .append(escapeJson(column))
+                            .append("\":");
+
+                        json.append("\"")
+                            .append(value == null ? "" : escapeJson(value))
+                            .append("\"");
                     }
 
                     json.append("}");
                 }
 
-                json.append("}");
+                json.append("]");
 
             } catch (Exception e) {
-                json = new StringBuilder("{\"error\":\"" + e.getMessage().replace("\"", "\\\"") + "\"}");
+                json = new StringBuilder();
+                json.append("{\"error\":\"")
+                    .append(escapeJson(e.getMessage()))
+                    .append("\"}");
             }
 
             exchange.getResponseHeaders().add("Content-Type", "application/json");
@@ -71,10 +84,24 @@ public class ApiServer {
         }
     }
 
+    static String escapeJson(String text) {
+        if (text == null) {
+            return "";
+        }
+
+        return text
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r");
+    }
+
     static void send(HttpExchange exchange, String response) throws IOException {
-        exchange.sendResponseHeaders(200, response.getBytes().length);
+        byte[] bytes = response.getBytes();
+        exchange.sendResponseHeaders(200, bytes.length);
+
         OutputStream os = exchange.getResponseBody();
-        os.write(response.getBytes());
+        os.write(bytes);
         os.close();
     }
 }
